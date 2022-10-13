@@ -48,7 +48,8 @@ class Settings(QWidget):
    
     def _callback(self):
       url = self.urlEdit.toPlainText()
-      com = self.comEdit.currentData()
-      examid = self.listWidget.currentItem()
+      com = self.comEdit.itemText(self.comEdit.currentIndex())
+      data = self.listWidget.currentItem().text()
+      examid = list(examIds.keys())[list(examIds.values()).index(data)]
       saveConfigFile(url, com, examid)
 
