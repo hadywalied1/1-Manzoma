@@ -4062,3 +4062,5 @@ env/Scripts/python.exe
 env/Scripts/pythonw.exe
 .vscode/settings.json
 GUI/__pycache__/user_login.cpython-37.pyc
+GUI/settingsUI.py
+Core/__pycache__/config.cpython-37.pyc

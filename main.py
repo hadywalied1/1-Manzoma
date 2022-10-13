@@ -3,7 +3,9 @@ from PySide2.QtWidgets import QApplication
 from qt_material import apply_stylesheet
 
 from GUI.user_login import LoginWindow
-
+from GUI.MainWindow import MainWindow
+from Core.config import *
+import pathlib
 
 logging.basicConfig(level=logging.DEBUG)
 faulthandler.is_enabled()
@@ -13,13 +15,15 @@ os.environ["QT_SCREEN_SCALE_FACTORS"] = '1'
 os.environ["QT_SCALE_FACTOR"] = '1'
 os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = '0'
 
-
+if(not pathlib.Path(config_path).exists()):
+   saveConfigFile(BASE_URL, BASE_COM_PORT, 27)
+   
 app = QApplication(sys.argv)
 app.setApplicationDisplayName("إختبارات العملي و البدني")
 
 apply_stylesheet(app, 'dark_purple.xml')
 
-form = LoginWindow()
+form = MainWindow()
 form.show()
 
 sys.exit(app.exec_())
