@@ -1,7 +1,7 @@
 from PySide2 import QtCore, QtGui, QtNetwork
 import sys
-from config import *
-from EmittingStream import EmittingStream
+from Core.config import *
+from Core.EmittingStream import EmittingStream
       
       
 class NetworkingAPI:
@@ -9,10 +9,11 @@ class NetworkingAPI:
     def __init__(self, responseCallback):    
       self.responseCallback = responseCallback
       self.emittingStream = EmittingStream(self.responseCallback)
-      
+      self.config = getConfigFile()
+      self.ip = self.config['url']
       
     def getExaminer(self,id):
-      url = QtCore.QUrl(BASE_URL)
+      url = QtCore.QUrl(self.ip + '/getExaminer')
       query = QtCore.QUrlQuery(url)
       query.addQueryItem("id", id)
       url.setQuery(query)
@@ -22,7 +23,7 @@ class NetworkingAPI:
       self.nam.get(req)    
 
     def checkIsDone(self,id,examId):
-      url = QtCore.QUrl(BASE_URL)
+      url = QtCore.QUrl(self.ip + '/checkIsDone')
       query = QtCore.QUrlQuery(url)
       query.addQueryItem("id", id)
       query.addQueryItem("examId", examId)
@@ -33,7 +34,7 @@ class NetworkingAPI:
       self.nam.get(req)    
 
     def saveExam(self,id,examId, result):
-      url = QtCore.QUrl(BASE_URL)
+      url = QtCore.QUrl(self.ip + '/saveExam')
       query = QtCore.QUrlQuery(url)
       query.addQueryItem("id", id)
       query.addQueryItem("examId", examId)

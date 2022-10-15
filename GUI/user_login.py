@@ -11,6 +11,7 @@ from PySide2.QtCore import Qt
 
 import pathlib as path
 from Core.config import *
+from Core.NetworkReqs import NetworkingAPI
 
 from GUI.settingsUI import Settings
 
@@ -49,12 +50,19 @@ class LoginWindow(QWidget):
         
         
         self.bSubmit = QPushButton("بحث")
+        self.bSubmit.clicked.connect(self.searchUser)
         self.layout.addWidget(self.bSubmit)
 
+        self.progress = QProgressBar()
+        self.progress.setMinimum(0)
+        self.progress.setMaximum(0)
+        self.progress.hide()
+        self.layout.addWidget(self.progress)
+        
         self.userdataWidget = QWidget()
         self.userdataLayout = QVBoxLayout()
-        self.username = QLabel()
-        self.userNumber = QLabel()
+        self.username = QLabel("username")
+        self.userNumber = QLabel("user number")
         self.examName = QLabel("إسم الإختبار : " + examIds[self.config['examId']])
         self.startTest = QPushButton("إبدأ الإختبار")
         self.startTest.clicked.connect(self.startTesting)
@@ -63,7 +71,7 @@ class LoginWindow(QWidget):
         self.userdataLayout.addWidget(self.examName)
         self.userdataLayout.addWidget(self.startTest)
         self.userdataWidget.setLayout(self.userdataLayout)
-        self.userdataWidget.hide()
+        # self.userdataWidget.hide()
         self.layout.addWidget(self.userdataWidget)
         
         self.layout.setSpacing(30)
@@ -77,15 +85,24 @@ class LoginWindow(QWidget):
         self.setLayout(self.mainlayout)
     
     def showSettings(self):
-        
         if(self.settingsWidget.isVisible()):
             self.settingsWidget.hide()
         else:
             self.settingsWidget.show()        
     
+    def searchUser(self):
+        self.progress.show()
+        networkCall = NetworkingAPI(self.userFound)
+        networkCall.getExaminer(self.number.text())
+        
+    def userFound(self, text):
+        self.progress.hide()
+        self.userdataWidget.show()
+        self.username.setText(text)
+        
+    
     def startTesting(self):
         pass
     
-    def _callback(self):
-        pass
+    
 

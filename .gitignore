@@ -4068,3 +4068,6 @@ GUI/__pycache__/settingsUI.cpython-37.pyc
 GUI/__pycache__/MainWindow.cpython-37.pyc
 GUI/__pycache__/settingsUI.cpython-37.pyc
 GUI/__pycache__
+Core/__pycache__/EmittingStream.cpython-37.pyc
+Core/__pycache__/NetworkReqs.cpython-37.pyc
+Core/__pycache__/
