@@ -21,7 +21,7 @@ if(not pathlib.Path(config_path).exists()):
 app = QApplication(sys.argv)
 app.setApplicationDisplayName("إختبارات العملي و البدني")
 
-apply_stylesheet(app, 'dark_purple.xml')
+apply_stylesheet(app, 'dark_amber.xml')
 
 form = MainWindow()
 form.show()

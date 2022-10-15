@@ -22,9 +22,8 @@ class MainWindow(QMainWindow):
 
     self.mainlayout = QHBoxLayout()
     self.mainlayout.setDirection(QtWidgets.QBoxLayout.Direction.RightToLeft)
-    self.w = Settings()
+    self.w = LoginWindow()
     self.mainlayout.addWidget(self.w)
-    self.mainlayout.addWidget(QLabel("This Is A Long Text"))
     self.window = QWidget()
     self.window.setLayout(self.mainlayout)
     self.setCentralWidget(self.window)
