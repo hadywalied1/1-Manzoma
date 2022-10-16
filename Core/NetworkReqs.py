@@ -35,15 +35,15 @@ class NetworkingAPI:
 
     def saveExam(self,id,examId, result):
       url = QtCore.QUrl(self.ip + '/saveExam')
-      query = QtCore.QUrlQuery(url)
-      query.addQueryItem("id", id)
-      query.addQueryItem("examId", examId)
-      query.addQueryItem("result", result)
-      url.setQuery(query)
+      
       req = QtNetwork.QNetworkRequest(url)
+      req.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader, "application/json")
+      obj = {"barcode":str(id), "examid": int(examId), "result": str(result)}
+      doc = QtCore.QJsonDocument(obj)
+      jobj = doc.toJson()
       self.nam = QtNetwork.QNetworkAccessManager()
       self.nam.finished.connect(self.handleResponse)
-      self.nam.post(req) 
+      self.nam.post(req, jobj) 
 
          
     def handleResponse(self, reply):
