@@ -71,7 +71,7 @@ class LoginWindow(QWidget):
         self.userdataLayout.addWidget(self.examName)
         self.userdataLayout.addWidget(self.startTest)
         self.userdataWidget.setLayout(self.userdataLayout)
-        # self.userdataWidget.hide()
+        self.userdataWidget.hide()
         self.layout.addWidget(self.userdataWidget)
         
         self.layout.setSpacing(30)
@@ -92,17 +92,38 @@ class LoginWindow(QWidget):
     
     def searchUser(self):
         self.progress.show()
-        networkCall = NetworkingAPI(self.userFound)
-        networkCall.getExaminer(self.number.text())
+        try:
+            networkCall = NetworkingAPI(req="examiner", inputs={"id":self.number.text()})
+            networkCall.rs.connect(lambda text: self.userFound(str(text)))
+            networkCall.run()
+        finally:
+            networkCall.stop()
         
     def userFound(self, text):
         self.progress.hide()
         self.userdataWidget.show()
-        self.username.setText(text)
+        s = json.loads(text)
+        self.username.setText("الإسم: " + s["name"])
+        self.userNumber.setText("الرقم العسكري : "+s["sold_id"])
         
     
     def startTesting(self):
-        pass
+        try:
+            self.progress.show()
+            networkCall = NetworkingAPI(req="check", inputs={"id":self.number.text(),
+                                                            "examId" : str(self.config["examId"])})
+            networkCall.rs.connect(lambda text: self.examFound(str(text)))
+            networkCall.run()
+        finally:
+            networkCall.stop()        
+       
+    def examFound(self, text):
+        self.progress.hide()
+        s = json.loads(text)
+        if(s["done"] == 1):
+            pass
+        else:
+            pass
     
     
 

@@ -4,13 +4,22 @@ from Core.config import *
 from Core.EmittingStream import EmittingStream
       
       
-class NetworkingAPI:
-  
-    def __init__(self, responseCallback):    
-      self.responseCallback = responseCallback
-      self.emittingStream = EmittingStream(self.responseCallback)
+class NetworkingAPI(QtCore.QThread):
+    rs = QtCore.Signal(object)
+    
+    def __init__(self, req : str, inputs , parent = None, index =0): 
+      super(NetworkingAPI, self).__init__(parent)  
       self.config = getConfigFile()
       self.ip = self.config['url']
+      self.inputs = inputs
+      self.index = index
+      self.is_running = True
+      if req =="examiner":
+        self.func = self.getExaminer
+      elif req == "check":
+        self.func = self.checkIsDone
+      elif req == "save":
+        self.func = self.saveExam
       
     def getExaminer(self,id):
       url = QtCore.QUrl(self.ip + '/getExaminer')
@@ -51,8 +60,20 @@ class NetworkingAPI:
       if er == QtNetwork.QNetworkReply.NoError:
          bytes_string = reply.readAll()
          print(str(bytes_string, 'utf-8'))
-         self.emittingStream.write(str(bytes_string,'utf-8'))
+         self.rs.emit(str(bytes_string,'utf-8'))
       else:
          print("Error occured: ", er)
-         print(reply.errorString())
-         self.emittingStream.write("Error")            
+         print(reply.errorString())   
+         self.rs.emit("Error")
+        
+    def run(self):
+        print('Starting thread...', self.index)
+        try:
+            self.func(**self.inputs)
+        except Exception as e:
+            print(e)
+
+    def stop(self):
+        self.is_running = False
+        print('Stopping thread...', self.index)
+        self.terminate()
