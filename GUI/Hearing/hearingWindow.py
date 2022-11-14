@@ -11,21 +11,13 @@ from PySide2.QtCore import Qt
 
 import pathlib as path
 
-class EmittingStream(QtCore.QObject):
-    textWritten = QtCore.Signal(str)
 
-    def __init__(self, textWrittenFunction):
-        QtCore.QObject.__init__(self)
-        self.textWritten.connect(textWrittenFunction)
-
-    def write(self, text):
-        self.textWritten.emit(str(text))
-
-
-class WeightWindow(QMainWindow):
-  def __init__(self):
-      pass
+class HearingWindow(QWidget):
+    ended = QtCore.Signal(object)
+    
+    def __init__(self):
+        pass
    
-  def show():
-      pass
+    def show():
+        pass
 
