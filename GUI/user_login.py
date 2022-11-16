@@ -131,44 +131,44 @@ class LoginWindow(QWidget):
         if(s["done"] == 1):
             if self.config["examId"] == 27: #arms
                 layout = QVBoxLayout()
-                widget = ArmsWindow()
+                widget = ArmsWindow(self.number.text())
                 widget.ended.connect(self.endExam)
                 layout.addWidget(widget)
                 self.examWidget.setLayout(layout)
             elif self.config["examId"] == 30: #depth
                 layout = QVBoxLayout()
-                widget = DepthWindow()
+                widget = DepthWindow(self.number.text())
                 widget.ended.connect(self.endExam)
                 layout.addWidget(widget)
                 self.examWidget.setLayout(layout)
             elif self.config["examId"] == 31: #stability
                 layout = QVBoxLayout()
-                widget = StabilityWindow()
+                widget = StabilityWindow(self.number.text())
                 widget.ended.connect(self.endExam)
                 layout.addWidget(widget)
                 self.examWidget.setLayout(layout)
             elif self.config["examId"] == 35: # hearing
                 layout = QVBoxLayout()
-                widget = HearingWindow()
+                widget = HearingWindow(self.number.text())
                 widget.ended.connect(self.endExam)
                 layout.addWidget(widget)
                 self.examWidget.setLayout(layout)
             elif self.config["examId"] == 37 or self.config["examId"] == 39 \
                 or self.config["examId"] == 46: #power
                 layout = QVBoxLayout()
-                widget = PowerWindow()
+                widget = PowerWindow(self.number.text())
                 widget.ended.connect(self.endExam)
                 layout.addWidget(widget)
                 self.examWidget.setLayout(layout)
             elif self.config["examId"] == 40: #effort
                 layout = QVBoxLayout()
-                widget = EffortWindow()
+                widget = EffortWindow(self.number.text())
                 widget.ended.connect(self.endExam)
                 layout.addWidget(widget)
                 self.examWidget.setLayout(layout)
             elif self.config["examId"] == 47 or self.config["examId"] == 48: #weight
                 layout = QVBoxLayout()
-                widget = WeightWindow()
+                widget = WeightWindow(self.number.text())
                 widget.ended.connect(self.endExam)
                 layout.addWidget(widget)
                 self.examWidget.setLayout(layout)
@@ -180,6 +180,9 @@ class LoginWindow(QWidget):
             print("WTF")
     
     def endExam(self):
+        self.examWidget.hide()
+        self.userdataWidget.hide()
+        
         print("exam Ended")
         
     def config_changed(self,tex):

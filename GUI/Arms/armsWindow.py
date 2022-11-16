@@ -15,17 +15,9 @@ from Core.config import *
 class ArmsWindow(QWidget):
     ended = QtCore.Signal(object)
     
-    def __init__(self):
-        super(ArmsWindow, self).__init__()
-        
-        self.config = getConfigFile()
-        self.layout = QVBoxLayout()
-        self.Title = QLabel('')
-        self.Title.setMargin(20)
-        self.Title.setAlignment(Qt.AlignHCenter)
-        self.Title.setFont(QFont('Arial', 32, QFont.DemiBold))
-        self.layout.addWidget(self.Title)
-        self.setLayout(self.layout)
+    def __init__(self, id):
+        self.id = id
+        pass
         
    
     def show():

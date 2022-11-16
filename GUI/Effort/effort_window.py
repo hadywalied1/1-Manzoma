@@ -15,7 +15,8 @@ import pathlib as path
 class EffortWindow(QWidget):
     ended = QtCore.Signal(object)
     
-    def __init__(self):
+    def __init__(self, id):
+        self.id = id
         pass
    
     def show():

@@ -15,7 +15,6 @@ from Core.config import *
 from Core.EmittingStream import *
 
 from Core.NetworkReqs import NetworkingAPI
-import math
 
 import numpy as NP
 
