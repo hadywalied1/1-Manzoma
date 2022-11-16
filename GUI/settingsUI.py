@@ -12,6 +12,9 @@ from Core.config import *
 import pathlib as path
 
 class Settings(QWidget):
+  
+    saved = QtCore.Signal(object)
+
     def __init__(self):
       super(Settings, self).__init__()
       
@@ -57,5 +60,8 @@ class Settings(QWidget):
       com = self.comEdit.itemText(self.comEdit.currentIndex())
       data = self.listWidget.currentItem().text()
       examid = list(examIds.keys())[list(examIds.values()).index(data)]
-      saveConfigFile(url, com, examid)
+      try:
+        saveConfigFile(url, com, examid)
+      finally:
+        self.saved.emit("Saved")
 

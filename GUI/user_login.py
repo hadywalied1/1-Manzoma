@@ -30,7 +30,7 @@ class LoginWindow(QWidget):
         self.config = getConfigFile()
 
         self.settingsWidget = Settings()
-
+        self.settingsWidget.saved.connect(self.config_changed)
         self.mainlayout = QHBoxLayout()
         self.mainlayout.setDirection(QtWidgets.QBoxLayout.Direction.RightToLeft)
         
@@ -181,5 +181,8 @@ class LoginWindow(QWidget):
     
     def endExam(self):
         print("exam Ended")
+        
+    def config_changed(self,tex):
+        self.config = getConfigFile()
     
 

@@ -5,6 +5,7 @@ from qt_material import apply_stylesheet
 from GUI.user_login import LoginWindow
 from GUI.MainWindow import MainWindow
 from Core.config import *
+from Core.EmittingStream import *
 import pathlib
 
 logging.basicConfig(level=logging.DEBUG)
