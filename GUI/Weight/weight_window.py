@@ -1,5 +1,5 @@
 import sys
-from PySide2 import QtGui, QtCore
+from PySide2 import QtGui, QtCore, QtWidgets
 from PySide2.QtWidgets import (QMainWindow,
                                QPushButton, QWidget, QLabel,
                                QHBoxLayout, QVBoxLayout, QCheckBox,
@@ -7,7 +7,6 @@ from PySide2.QtWidgets import (QMainWindow,
                                QTextEdit, )
 from PySide2.QtGui import QFont, QIcon
 from PySide2.QtCore import Qt
-
 
 import pathlib as path
 
@@ -18,11 +17,15 @@ from Core.NetworkReqs import NetworkingAPI
 
 import numpy as NP
 
+from Core.EmittingStream import *
+from Core.NetworkReqs import NetworkingAPI
+
 class WeightWindow(QWidget):
     ended = QtCore.Signal(object)
     
     def __init__(self, id):
         super(WeightWindow, self).__init__()
+        self.setMaximumSize(800,800)
         self.c = 0
         self.id = id
         self.weights = []
@@ -30,9 +33,12 @@ class WeightWindow(QWidget):
         self.weight_median = 0
         self.height_median = 0
         self.config = getConfigFile()
-        self.serialThread = EmittingStream()
-        self.serialThread.textWritten.connect(self.setData)    
-        self.serialThread.start()
+        self.serialThread = EmittingStream(index=2000)
+        self.serialThread.rs.connect(self.setData)    
+        self.serialThread.deviceConnection.connect(self.testFinished)    
+        
+        self.weightLayout = QHBoxLayout()
+        self.weightLayout.setDirection(QtWidgets.QBoxLayout.Direction.RightToLeft)
         
         self.layout = QVBoxLayout()
         self.Title = QLabel('إختيار الطول و الوزن')
@@ -45,7 +51,7 @@ class WeightWindow(QWidget):
         self.instrLayout = QVBoxLayout()
         self.instr = QLabel()
         instructions = """
-                تعليمات الإختبار\n
+                    تعليمات الإختبار\n
                 \n
                     1- إنتظر سماع صوت الصافرة الأولي \n
                     2- عند سماع الصافرة الأولي اصعد علي الميزان\n
@@ -55,12 +61,18 @@ class WeightWindow(QWidget):
         """
         self.instr.setText(instructions)
         self.instr.setMargin(20)
-        self.instr.setAlignment(Qt.AlignHCenter)
+        
+        self.instr.setAlignment(Qt.AlignRight)
         self.instr.setFont(QFont('Arial', 32, QFont.DemiBold))
         self.instrLayout.addWidget(self.instr)
         self.bStartTest = QPushButton("إبدأ الإختبار")
         self.bStartTest.clicked.connect(self.startTest)
         self.instrLayout.addWidget(self.bStartTest)
+        self.bRestart = QPushButton("إعادة قياس")
+        self.bRestart.clicked.connect(self.restartTest)
+        self.bRestart.hide()
+        self.instrLayout.addWidget(self.bRestart)
+        
         self.instrWidget.setLayout(self.instrLayout)
         self.layout.addWidget(self.instrWidget)
         
@@ -72,6 +84,7 @@ class WeightWindow(QWidget):
         self.weight.setDisabled(True)
         self.weight.setPlaceholderText("الوزن")
         self.weight.setAlignment(Qt.AlignAbsolute | Qt.AlignCenter)
+        self.weight.setMaximumHeight(100)
         
         self.examLayout.addWidget(self.weightTitle)
         self.examLayout.addWidget(self.weight)
@@ -81,6 +94,7 @@ class WeightWindow(QWidget):
         self.length.setDisabled(True)
         self.length.setPlaceholderText("الطول")
         self.length.setAlignment(Qt.AlignAbsolute | Qt.AlignCenter)
+        self.length.setMaximumHeight(100)
         
         self.examLayout.addWidget(self.lengthTitle)
         self.examLayout.addWidget(self.length)
@@ -92,28 +106,46 @@ class WeightWindow(QWidget):
         
         self.examWidget.setLayout(self.examLayout)
         self.examWidget.hide()
-        self.layout.addWidget(self.examWidget)
+        
+        self.weightLayout.addLayout(self.layout)
+        self.weightLayout.addWidget(self.examWidget)
               
-        self.setLayout(self.layout)
+        self.setLayout(self.weightLayout)
+        
         
     def startTest(self):
         self.examWidget.show()
-        start = int(time.time())
-        while int(time.time()) - start < 6:
-            pass
-        self.serialThread.stop()
-        self.bEndTest.setDisabled(False)
+        self.serialThread.start()
+        self.bStartTest.hide()
+        # start = int(time.time())
+        # while int(time.time()) - start < 6:
+        #     pass
+        # self.serialThread.stop()
+        # self.bEndTest.setDisabled(False)
     
+    def restartTest(self):
+        self.bEndTest.setDisabled(True)
+        self.bRestart.setDisabled(True)
+        self.serialThread.start()
+        self.bStartTest.hide()
+    
+    def testFinished(self, t):
+        if(not t):
+            self.bEndTest.setDisabled(False)
+            self.bRestart.setDisabled(False)
+            self.bRestart.show()
+            self.serialThread.stop()
+        
     def setData(self, txt):
-        d = txt.split(":")
-        if d[0] == "Weight":
-            d[1] = d[1].strip()
-            if float(d[1]) > 30.0:
-                self.weights.append(round(float(d[1]),2))
-        elif d[0] == "Length":
-            d[1] = d[1].strip()
-            if float(d[1]) > 60.0:
-                self.lengths.append(round(float(d[1]),1))
+        d = txt.split(",")
+        
+        weight = d[1].strip()
+        if float(weight) > 30.0:
+                self.weights.append(round(float(weight),2))
+        
+        length = d[2].strip()
+        if float(length) > 60.0:
+                self.lengths.append(round(float(length),1))
         self.weight_median = round(NP.max(NP.array(self.weights)))
         self.height_median = round(NP.max(NP.array(self.lengths))) 
         self.weight.setText(str(self.weight_median))

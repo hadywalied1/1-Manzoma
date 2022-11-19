@@ -19,7 +19,7 @@ class MainWindow(QMainWindow):
   def __init__(self):
     super(MainWindow, self).__init__()
     self.setWindowTitle("AFTC")
-
+    self.setMaximumSize(800,800)
     self.mainlayout = QHBoxLayout()
     self.mainlayout.setDirection(QtWidgets.QBoxLayout.Direction.RightToLeft)
     self.w = LoginWindow()

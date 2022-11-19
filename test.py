@@ -7,6 +7,8 @@ from PySide2 import QtWidgets,QtCore,QtGui
 from PySide2.QtGui import QIcon
 from PySide2.QtCore import Qt
 from qt_material import apply_stylesheet
+from Core.EmittingStream import EmittingStream
+
 
 
 
@@ -82,8 +84,20 @@ class Manager:
 
 
 
-
 app = QApplication(sys.argv)
 apply_stylesheet(app, 'dark_yellow.xml')
 w = Manager()
+
+# try:
+#     networkCall = NetworkingAPI(req="examiner", inputs={"id":"29811010109296"})
+
+#     networkCall.rs.connect(lambda text: print(str(text)))
+#     networkCall.run()
+# finally : 
+#     networkCall.stop()
+    
+e = EmittingStream(index=1000)
+e.rs.connect(lambda text: print(str(text)))
+e.start()
+
 app.exec_()

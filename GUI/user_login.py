@@ -88,7 +88,7 @@ class LoginWindow(QWidget):
                 
         self.examWidget = QWidget()
         self.examWidget.hide()
-        self.mainlayout.addWidget(self.examWidget)
+        # self.mainlayout.addWidget(self.examWidget)
         
         self.setLayout(self.mainlayout)
     
@@ -101,11 +101,12 @@ class LoginWindow(QWidget):
     def searchUser(self):
         self.progress.show()
         try:
-            networkCall = NetworkingAPI(req="examiner", inputs={"id":self.number.text()})
+            networkCall = NetworkingAPI(req="examiner", inputs={"id":self.number.text()}, index = 100)
             networkCall.rs.connect(lambda text: self.userFound(str(text)))
             networkCall.run()
         finally:
-            networkCall.stop()
+            pass
+            # networkCall.stop()
         
     def userFound(self, text):
         self.progress.hide()
@@ -119,11 +120,12 @@ class LoginWindow(QWidget):
         try:
             self.progress.show()
             networkCall = NetworkingAPI(req="check", inputs={"id":self.number.text(),
-                                                            "examId" : str(self.config["examId"])})
+                                                            "examId" : str(self.config["examId"])}, index=110)
             networkCall.rs.connect(lambda text: self.examFound(str(text)))
             networkCall.run()
         finally:
-            networkCall.stop()        
+            pass
+            # networkCall.stop()        
        
     def examFound(self, text):
         self.progress.hide()
@@ -182,7 +184,8 @@ class LoginWindow(QWidget):
     def endExam(self):
         self.examWidget.hide()
         self.userdataWidget.hide()
-        
+        self.examWidget = QWidget()
+
         print("exam Ended")
         
     def config_changed(self,tex):

@@ -1,7 +1,6 @@
-from PySide2 import QtCore, QtGui, QtNetwork
+from PySide2 import QtCore, QtNetwork
 import sys
 from Core.config import *
-from Core.EmittingStream import EmittingStream
       
       
 class NetworkingAPI(QtCore.QThread):
@@ -65,6 +64,7 @@ class NetworkingAPI(QtCore.QThread):
          print("Error occured: ", er)
          print(reply.errorString())   
          self.rs.emit("Error")
+      self.stop()
         
     def run(self):
         print('Starting thread...', self.index)
