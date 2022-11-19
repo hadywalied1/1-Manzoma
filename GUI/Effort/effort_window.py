@@ -21,16 +21,11 @@ class EffortWindow(QWidget):
     def __init__(self, id):
         super(EffortWindow, self).__init__()
         self.setMaximumSize(800,800)
-        self.c = 0
         self.id = id
-        self.weights = []
-        self.lengths = []
-        self.weight_median = 0
-        self.height_median = 0
         self.config = getConfigFile()
         
-        self.weightLayout = QHBoxLayout()
-        self.weightLayout.setDirection(QtWidgets.QBoxLayout.Direction.RightToLeft)
+        self.effortScreen = QHBoxLayout()
+        self.effortScreen.setDirection(QtWidgets.QBoxLayout.Direction.RightToLeft)
         
         self.layout = QVBoxLayout()
         self.Title = QLabel('إختيار بذل الجهد')
@@ -83,10 +78,10 @@ class EffortWindow(QWidget):
         self.examWidget.setLayout(self.examLayout)
         self.examWidget.hide()
         
-        self.weightLayout.addLayout(self.layout)
-        self.weightLayout.addWidget(self.examWidget)
+        self.effortScreen.addLayout(self.layout)
+        self.effortScreen.addWidget(self.examWidget)
               
-        self.setLayout(self.weightLayout)
+        self.setLayout(self.effortScreen)
         
         
     def startTest(self):
