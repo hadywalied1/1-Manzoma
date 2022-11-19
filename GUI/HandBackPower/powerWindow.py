@@ -19,6 +19,7 @@ class PowerWindow(QWidget):
     ended = QtCore.Signal(object)
     
     def __init__(self, id):
+        super(PowerWindow, self).__init__()
         self.id = id
         self.setMaximumSize(800,800)
         self.c = 0
@@ -67,7 +68,7 @@ class PowerWindow(QWidget):
         self.left = QTextEdit()
         self.left.setPlaceholderText("قوة القبضة اليسري")
         self.left.setAlignment(Qt.AlignAbsolute | Qt.AlignCenter)
-        self.left.setMaximumHeight(50)
+   
         
         self.examLayout.addWidget(self.leftHandTitle)
         self.examLayout.addWidget(self.left)
@@ -77,7 +78,7 @@ class PowerWindow(QWidget):
         self.right = QTextEdit()
         self.right.setPlaceholderText("قوة القبضة اليمني")
         self.right.setAlignment(Qt.AlignAbsolute | Qt.AlignCenter)
-        self.right.setMaximumHeight(50)
+   
         
         self.examLayout.addWidget(self.rightHandTitle)
         self.examLayout.addWidget(self.right)
@@ -87,7 +88,7 @@ class PowerWindow(QWidget):
         self.back = QTextEdit()
         self.back.setPlaceholderText("قوة الظهر و القدمين")
         self.back.setAlignment(Qt.AlignAbsolute | Qt.AlignCenter)
-        self.back.setMaximumHeight(50)
+        
         
         self.examLayout.addWidget(self.backTitle)
         self.examLayout.addWidget(self.back)
@@ -99,9 +100,11 @@ class PowerWindow(QWidget):
         
         self.examWidget.setLayout(self.examLayout)
         self.examWidget.hide()
+        self.exaL = QVBoxLayout()
+        self.exaL.addWidget(self.examWidget)
         
-        self.powerLayout.addLayout(self.layout)
-        self.powerLayout.addWidget(self.examWidget)
+        self.powerLayout.addLayout(self.layout,3)
+        self.powerLayout.addLayout(self.exaL,1)
               
         self.setLayout(self.powerLayout)
         
