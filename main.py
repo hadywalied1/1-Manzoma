@@ -1,3 +1,4 @@
+#pyinstaller -D -n AFTCs_badany -w -d all -i .\adf.png main.py
 import sys, os, logging, faulthandler
 from PySide2.QtWidgets import QApplication
 from qt_material import apply_stylesheet
@@ -21,6 +22,7 @@ if(not pathlib.Path(config_path).exists()):
    
 app = QApplication(sys.argv)
 app.setApplicationDisplayName("إختبارات العملي و البدني")
+
 
 apply_stylesheet(app, 'dark_amber.xml')
 

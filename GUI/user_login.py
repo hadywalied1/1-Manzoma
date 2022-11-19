@@ -71,7 +71,8 @@ class LoginWindow(QWidget):
         self.userdataLayout = QVBoxLayout()
         self.username = QLabel("username")
         self.userNumber = QLabel("user number")
-        self.examName = QLabel("إسم الإختبار : " + examIds[self.config['examId']])
+        self.examName = QLabel()
+        self.examName.setText("إسم الإختبار : " + examIds[self.config['examId']])
         self.startTest = QPushButton("إبدأ الإختبار")
         self.startTest.clicked.connect(self.startTesting)
         self.userdataLayout.addWidget(self.username)
@@ -130,7 +131,7 @@ class LoginWindow(QWidget):
     def examFound(self, text):
         self.progress.hide()
         s = json.loads(text)
-        if(s["done"] == 1):
+        if(s["done"] == 0):
             if self.config["examId"] == 27: #arms
                 layout = QVBoxLayout()
                 widget = ArmsWindow(self.number.text())
@@ -190,5 +191,7 @@ class LoginWindow(QWidget):
         
     def config_changed(self,tex):
         self.config = getConfigFile()
+        self.examName.setText("إسم الإختبار : " + examIds[self.config['examId']])
+        
     
 

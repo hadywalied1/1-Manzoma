@@ -9,6 +9,7 @@ from PySide2.QtGui import QFont, QIcon
 from PySide2.QtCore import Qt
 
 import pathlib as path
+import winsound
 
 from Core.config import *
 from Core.EmittingStream import *
@@ -84,7 +85,7 @@ class WeightWindow(QWidget):
         self.weight.setDisabled(True)
         self.weight.setPlaceholderText("الوزن")
         self.weight.setAlignment(Qt.AlignAbsolute | Qt.AlignCenter)
-        self.weight.setMaximumHeight(100)
+        self.weight.setMaximumHeight(50)
         
         self.examLayout.addWidget(self.weightTitle)
         self.examLayout.addWidget(self.weight)
@@ -94,7 +95,7 @@ class WeightWindow(QWidget):
         self.length.setDisabled(True)
         self.length.setPlaceholderText("الطول")
         self.length.setAlignment(Qt.AlignAbsolute | Qt.AlignCenter)
-        self.length.setMaximumHeight(100)
+        self.length.setMaximumHeight(50)
         
         self.examLayout.addWidget(self.lengthTitle)
         self.examLayout.addWidget(self.length)
@@ -117,20 +118,24 @@ class WeightWindow(QWidget):
         self.examWidget.show()
         self.serialThread.start()
         self.bStartTest.hide()
-        # start = int(time.time())
-        # while int(time.time()) - start < 6:
-        #     pass
-        # self.serialThread.stop()
-        # self.bEndTest.setDisabled(False)
+        frequency = 2500  # Set Frequency To 2500 Hertz
+        duration = 1000  # Set Duration To 1000 ms == 1 second
+        winsound.Beep(frequency, duration)
     
     def restartTest(self):
         self.bEndTest.setDisabled(True)
         self.bRestart.setDisabled(True)
         self.serialThread.start()
         self.bStartTest.hide()
+        frequency = 2500  # Set Frequency To 2500 Hertz
+        duration = 1000  # Set Duration To 1000 ms == 1 second
+        winsound.Beep(frequency, duration)
     
     def testFinished(self, t):
         if(not t):
+            frequency = 1500  # Set Frequency To 1500 Hertz
+            duration = 1000  # Set Duration To 1000 ms == 1 second
+            winsound.Beep(frequency, duration)
             self.bEndTest.setDisabled(False)
             self.bRestart.setDisabled(False)
             self.bRestart.show()
