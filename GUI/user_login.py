@@ -44,10 +44,11 @@ class LoginWindow(QWidget):
         self.settingsLayout.addWidget(self.settingsBtn,1)
         self.layout.addLayout(self.settingsLayout)
         
-        self.Title = QLabel('من فضلك قم بإدخال الرقم العسكري/الرقم الثلاثي/ الرقم القومي للممتحن و اختيار الإختبار \n ثم إضغط علي بحث')
+        self.Title = QLabel('من فضلك قم بإدخال الرقم العسكري/الرقم الثلاثي/ الرقم القومي للممتحن  \n ثم إضغط علي بحث')
         self.Title.setMargin(20)
         self.Title.setAlignment(Qt.AlignHCenter)
-        self.Title.setFont(QFont('Arial', 32, QFont.DemiBold))
+        self.Title.setProperty('class', 'just')
+        self.Title.setFont(QFont('Arial', 16, QFont.DemiBold))
         self.layout.addWidget(self.Title)
         
         self.number = QLineEdit()
@@ -131,7 +132,7 @@ class LoginWindow(QWidget):
     def examFound(self, text):
         self.progress.hide()
         s = json.loads(text)
-        if(s["done"] == 0):
+        if(s["done"] == 1):
             if self.config["examId"] == 27: #arms
                 layout = QVBoxLayout()
                 widget = ArmsWindow(self.number.text())

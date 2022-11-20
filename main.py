@@ -23,8 +23,44 @@ if(not pathlib.Path(config_path).exists()):
 app = QApplication(sys.argv)
 app.setApplicationDisplayName("إختبارات العملي و البدني")
 
+extra = {
 
-apply_stylesheet(app, 'dark_amber.xml')
+    # Button colors
+    'danger': '#dc3545',
+    'warning': '#ffc107',
+    'success': '#17a2b8',
+
+    # Font
+    'font_family': 'Roboto',
+   #  'font_size': '13px',
+   #  'line_height': '13px',
+    
+    # Density Scale
+    'density_scale': '0',
+}
+
+style = """
+   QLabel {{
+      color: {QTMATERIAL_PRIMARYCOLOR};
+      text-align: right;
+      text-transform: none;
+   }}
+   .just{{
+      text-align: justify;
+   }}
+   QTextEdit {{
+      text-align: center;
+      text-transform: none;
+   }}
+   QLineEdit {{
+      text-align: center;
+      text-transform: none;
+   }}
+   
+"""
+apply_stylesheet(app, 'dark_amber.xml', extra = extra)
+stylesheet = app.styleSheet()
+app.setStyleSheet(stylesheet + style.format(**os.environ))
 
 form = MainWindow()
 form.show()

@@ -63,8 +63,9 @@ class WeightWindow(QWidget):
         self.instr.setText(instructions)
         self.instr.setMargin(20)
         
-        self.instr.setAlignment(Qt.AlignRight)
-        self.instr.setFont(QFont('Arial', 32, QFont.DemiBold))
+        # self.instr.setAlignment(Qt.AlignRight)
+        self.instr.setProperty('class', 'just')
+        self.instr.setFont(QFont('Arial', 16, QFont.DemiBold))
         self.instrLayout.addWidget(self.instr)
         self.bStartTest = QPushButton("إبدأ الإختبار")
         self.bStartTest.clicked.connect(self.startTest)
@@ -81,6 +82,7 @@ class WeightWindow(QWidget):
         self.examLayout = QVBoxLayout()
         
         self.weightTitle = QLabel("الوزن")
+        self.weightTitle.setMaximumHeight(25)
         self.weight = QTextEdit()
         self.weight.setDisabled(True)
         self.weight.setPlaceholderText("الوزن")
@@ -91,6 +93,7 @@ class WeightWindow(QWidget):
         self.examLayout.addWidget(self.weight)
         
         self.lengthTitle = QLabel("الطول")
+        self.lengthTitle.setMaximumHeight(25)
         self.length = QTextEdit()
         self.length.setDisabled(True)
         self.length.setPlaceholderText("الطول")
