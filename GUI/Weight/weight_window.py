@@ -64,7 +64,7 @@ class WeightWindow(QWidget):
         self.instr.setMargin(20)
         
         # self.instr.setAlignment(Qt.AlignRight)
-        self.instr.setProperty('class', 'just')
+        self.instr.setProperty('class', 'right')
         self.instr.setFont(QFont('Arial', 16, QFont.DemiBold))
         self.instrLayout.addWidget(self.instr)
         self.bStartTest = QPushButton("إبدأ الإختبار")

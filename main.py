@@ -45,6 +45,12 @@ style = """
       text-align: right;
       text-transform: none;
    }}
+   .center{{
+      text-align: center;
+   }}
+   .right{{
+      text-align: right;
+   }}
    .just{{
       text-align: justify;
    }}

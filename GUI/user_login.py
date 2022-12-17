@@ -132,7 +132,7 @@ class LoginWindow(QWidget):
     def examFound(self, text):
         self.progress.hide()
         s = json.loads(text)
-        if(s["done"] == 1):
+        if(s["done"] == 0):
             if self.config["examId"] == 27: #arms
                 layout = QVBoxLayout()
                 widget = ArmsWindow(self.number.text())

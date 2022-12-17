@@ -61,4 +61,4 @@ class EmittingStream(QtCore.QThread):
         # self.deviceConnection.emit(False)
         print('Stopping thread...', self.index)
         self.terminate()
-        
+
